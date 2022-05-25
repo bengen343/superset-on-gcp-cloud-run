@@ -1,6 +1,6 @@
 # Deploying Apache Superset on Google Cloud Run
-## Introudction
-In broad strokes we will use this repository to:
+## Introduction
+In broad strokes, we will use this repository to:
 * Set up Superset in a local VS Code development container.
 * Rather than creating the Superset configuration database locally, we'll point our development container to the SQL database within Google Cloud Platform that we'll use to support the final deployment.
 * Use our local deployment to configure the GCP SQL database.
@@ -9,7 +9,7 @@ In broad strokes we will use this repository to:
 
 This repository contains:
 * ```.devcontainer```: folder containing the files that will create a VS Code development container.
-* ```setup-scripts```: folder that contains a collection of shell scripts to setup and configure Google Cloud Platform (GCP) services. These scripts can be customized for your needs but they shouldn't require any customization as they rely on environment variables from the VS Code development container which you'll set in ```.env.template```.
+* ```setup-scripts```: folder that contains a collection of shell scripts to set up and configure Google Cloud Platform (GCP) services. These scripts can be customized for your needs but they shouldn't require any customization as they rely on environment variables from the VS Code development container which you'll set in ```.env.template```.
 * ```src```: folder that contains the files to build the Google Cloud Run Service.
 * ```.env.template``` to allow you to set environment variables with the values for your deployment.
 
@@ -45,7 +45,7 @@ If you don't already have a Google Cloud project set up for this, you'll need to
  Make sure the ```GOOGLE_CLOUD_PROJECT``` variable in ```./.env``` is set to match whatever you've chosen for your project name. Note that this value needs to be used in the ```SUPERSET_CONNECTION_NAME``` and ```SUPERSET_CONECTION_SECRET``` variables as well, so replace that portion of those strings as well now. 
 
 ### Configure Google Consent Screen
-Our deployment is designed to allow any user from your Google-based organization to access Superset. In otherwords, if their email contains '@yourorganization.com' they'll be able to sign in. To do this we'll need to configure a few things in the Google Cloud Console before proceeding.
+Our deployment is designed to allow any user from your Google-based organization to access Superset. In other words, if their email contains '@yourorganization.com' they'll be able to sign in. To do this we'll need to configure a few things in the Google Cloud Console before proceeding.
 1. From Google Console Home type 'APIs & Services' and choose that section.
 2. Choose 'OAuth Consent Screen' from the left-hand menu.
 3. Select 'Internal' and click **Create**.
@@ -75,15 +75,15 @@ Ensure that all of the variables in the ```./.env``` file accompanying this repo
 
 1. Ensure that Docker is running and open on your machine and then open VS Code.
 2.  Within VS Code select the **'Remote Explorer'** icon from the left navigation bar to open the 'Remote Containers' extension.
-3. Choose the **'Open Folder in Container'** button and select the folder containing the entirety of this repositoy: ```superset-on-gcp-cloud-run```. This step can take 5-10 minutes while the dependencies download and the container is built. When the container is fully built the file tree should display in the left pane.
+3. Choose the **'Open Folder in Container'** button and select the folder containing the entirety of this repository: ```superset-on-gcp-cloud-run```. This step can take 5-10 minutes while the dependencies download and the container is built. When the container is fully built the file tree should display in the left pane.
 4. From the top VS Code menu choose **'Terminal'** > **'New Terminal'** to open a terminal pane.
-6. Enter the command ```printenv``` in the terminal and press return. This will print a list of all the environment variables in your container. Scan through this to make sure those variables defined in ```./.env``` are displaying the correct values. If they aren't double check that file, save it, and rebuild the container. You won't be able to proceed if there are inaccuracies there. 
+5. Enter the command ```printenv``` in the terminal and press return. This will print a list of all the environment variables in your container. Scan through this to make sure those variables defined in ```./.env``` are displaying the correct values. If they aren't double-check that file, save it, and rebuild the container. You won't be able to proceed if there are inaccuracies. 
 
 ## Configure Google Cloud Platform Infrastructure
 
-1. Login to Google cloud via the terminal by entering the command ```gcloud auth login```. Because the container isn't connected to the outside world, it will generate a command that you'll need to copy into your Google Cloud SDK running outside the container. So, open the Google Cloud SDK Shell on your machine and paste in the command from the VS Code Terminal. This should open a browser window seeking your authorization to continue. Grant it access using your Google account of the same domain that you're deploying Superset on.
-2. Copy and paste the results from the Google Cloud SDK back into the VS Code terminal. If successful you should get a message saying 'Your are now logged in as...'
-3. Switch to the Google Cloud Project you setup earlier by entering the command ```gcloud config set project $GOOGLE_CLOUD_PROJECT``` this will take advantage of the environment variable defining the name of your Google Cloud Project that you should have set earlier. If successful the terminal should return 'Updated property [core/project].'
+1. Log in to Google cloud via the terminal by entering the command ```gcloud auth login```. Because the container isn't connected to the outside world, it will generate a command that you'll need to copy into your Google Cloud SDK running outside the container. So, open the Google Cloud SDK Shell on your machine and paste in the command from the VS Code Terminal. This should open a browser window seeking your authorization to continue. Grant it access using your Google account of the same domain that you're deploying Superset on.
+2. Copy and paste the results from the Google Cloud SDK back into the VS Code terminal. If successful you should get a message saying 'You are now logged in as...'
+3. Switch to the Google Cloud Project you set up earlier by entering the command ```gcloud config set project $GOOGLE_CLOUD_PROJECT``` this will take advantage of the environment variable defining the name of your Google Cloud Project that you should have set earlier. If successful the terminal should return 'Updated property [core/project].'
 4. Enable the various Google Cloud services we'll need within the project by typing ```setup-scripts/enable_gcp_services.sh``` into the VS Code terminal.
 
 _Some users have reported getting a 'Permission denied' error when attempting to run these shell scripts. If that happens to you, simply give yourself permission to execute the script by typing ```chmod u+x setup-scripts/enable_gcp_services.sh``` for example. This will give you execute permission on the script you designate._
@@ -97,20 +97,20 @@ Your Cloud Run service will pull secrets from GCP [Secret Manager](https://conso
 2. We'll also need to create a service account for Superset to use and grant it access to the secrets we just created as well as the various services we'll rely on. Run ```setup-scripts/create_gcp_service_account.sh``` in the VS Code terminal to create a service account named 'superset' in your project that can do this.
 
 ### Build Superset Configuration SQL Database
-1. Connect the VS Code development container to the GCP database we created by running this commnad in the terminal: ```/cloud_sql_proxy -instances=$SUPERSET_CONNECTION_NAME=tcp:5432```. If it's successful you should see the number next to the 'PORTS' heading at the top of the terminal increase by one and a pop-up may display informing you that 'Your application is now running on port 5432'.
+1. Connect the VS Code development container to the GCP database we created by running this command in the terminal: ```/cloud_sql_proxy -instances=$SUPERSET_CONNECTION_NAME=tcp:5432```. If it's successful you should see the number next to the 'PORTS' heading at the top of the terminal increase by one and a pop-up may display informing you that 'Your application is now running on port 5432'.
 2. This proxy connection will monopolize the terminal window you were just working in. Open a new terminal window by clicking '**+**' on the top-right of the terminal window you were just working in. 
 3. In the new terminal window you've just opened type ```superset db upgrade```. This may take some time to execute but this command is critical as it populates your Google Cloud hosted SQL database with all of the tables needed for Superset to run.
 
 
 ## Build & Deploy the Apache Superset Container
 
-Next we will push a Docker image to a Google Artifact Registry within the Google Cloud project. A Cloud Run service will them be created to deploy that image.
+Next, we will push a Docker image to a Google Artifact Registry within the Google Cloud project. A Cloud Run service will then be created to deploy that image.
 1. Create a Google Artifact Registry container by typing the command ```setup-scripts/create_gcp_artifact.sh``` into the VS Code terminal.
 2. Upload the contents of this repository's ```src``` folder to the repository you just created as a Docker image by typing ```setup-scripts/create_gcp_image.sh``` into the VS Code terminal.
 3. Turn the image you've uploaded into an active Google Cloud Run Service by typing the command ```setup-scripts/create_gcp_cloud_run.sh``` into the VS Code terminal
 
 ### Update Service Credential
-After running the script above, you will recieve a Google Cloud Run service URL.
+After running the script above, you will receive a Google Cloud Run service URL.
 1. Return to [Google Cloud Console](https://console.cloud.google.com/).
 2. Search for and select **APIs & Services** in the top search bar.
 3. Select **Credentials** from the left navigation bar.
@@ -119,8 +119,8 @@ After running the script above, you will recieve a Google Cloud Run service URL.
 
  Once you've done that, you will need to run the steps below to ensure future users are not granted admin access.
 
-### Refresh Superset roles
-1. Update `AUTH_USER_REGISTRATION_ROLE` in `superset_config.py` to 'Public'. Save and clsoe that file. All new accounts moving forward will default to Public and no longer Admin.
+### Refresh Superset Roles
+1. Update ```AUTH_USER_REGISTRATION_ROLE``` in ```superset_config.py``` to 'Public'. Save and close that file. All new accounts moving forward will default to Public and no longer Admin.
 2. Update the container image by again typing ```setup-scripts/create_gcp_image.sh``` into the VS Code terminal.
 3. Deploy your new container version by again typing ```setup-scripts/create_gcp_cloud_run.sh``` into the VS Code terminal.
 
