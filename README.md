@@ -1,4 +1,7 @@
+ ![superset on google cloud run](https://cdn-images-1.medium.com/max/1600/1*dTCVCKQ90Jq7ye94R2LAiA.png)
 # Deploying Apache Superset on Google Cloud Run
+This repository is accompanied by a comprehensive guide with screenshots which you can [find on Medium](https://medium.com/@bengen/deploying-apache-superset-on-google-cloud-run).
+
 ## Introduction
 In broad strokes, we will use this repository to:
 * Set up Superset in a local VS Code development container.
@@ -36,6 +39,8 @@ Install each of the above prerequisites in the order presented. Visual Studio Co
 If you don't already have a Google Cloud project set up for this, you'll need to create one. So, take a jaunt over to the Google Cloud Platform web interface -- [Google Cloud Console](https://console.cloud.google.com/).
 
  Selecting or creating a project is easily done from the drop-down on the top-left next to the 'Google Cloud Platform' text. Once you've created your project make sure you're working in it by ensuring the correct project name appears next to the drop-down you just selected.
+
+ ![google cloud console](https://cdn-images-1.medium.com/max/1600/1*Hwbi8LbCBWl2vueYFJZLUQ.png)
 
  Be sure to **enable billing** on the project that you've created. 
  1. Type 'Billing' in the top search bar and choose that option.
@@ -77,7 +82,9 @@ Ensure that all of the variables in the ```./.env``` file accompanying this repo
 2.  Within VS Code select the **'Remote Explorer'** icon from the left navigation bar to open the 'Remote Containers' extension.
 3. Choose the **'Open Folder in Container'** button and select the folder containing the entirety of this repository: ```superset-on-gcp-cloud-run```. This step can take 5-10 minutes while the dependencies download and the container is built. When the container is fully built the file tree should display in the left pane.
 4. From the top VS Code menu choose **'Terminal'** > **'New Terminal'** to open a terminal pane.
-5. Enter the command ```printenv``` in the terminal and press return. This will print a list of all the environment variables in your container. Scan through this to make sure those variables defined in ```./.env``` are displaying the correct values. If they aren't double-check that file, save it, and rebuild the container. You won't be able to proceed if there are inaccuracies. 
+5. Enter the command ```printenv``` in the terminal and press return. This will print a list of all the environment variables in your container. Scan through this to make sure those variables defined in ```./.env``` are displaying the correct values. If they aren't double-check that file, save it, and rebuild the container. You won't be able to proceed if there are inaccuracies.
+
+ ![vs code controls](https://cdn-images-1.medium.com/max/1600/1*SxLBoZTiM6_ulzrAnXE4WA.png)
 
 ## Configure Google Cloud Platform Infrastructure
 
