@@ -1,5 +1,5 @@
 gcloud run deploy superset \
-    --image=$GOOGLE_CLOUD_REGION-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/superset-repository/superset \
+    --image=$GOOGLE_CLOUD_REGION-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/superset-repository/superset:latest \
     --allow-unauthenticated \
     --port=8088 \
     --cpu=2 \
