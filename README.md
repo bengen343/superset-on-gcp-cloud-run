@@ -1,6 +1,6 @@
  ![superset on google cloud run](https://cdn-images-1.medium.com/max/1600/1*dTCVCKQ90Jq7ye94R2LAiA.png)
 # Deploying Apache Superset on Google Cloud Run
-This repository is accompanied by a comprehensive guide with screenshots which you can [find on Medium](https://medium.com/@bengen/deploying-apache-superset-on-google-cloud-run).
+This repository is accompanied by a comprehensive guide with screenshots which you can [find on Medium](https://towardsdatascience.com/deploying-apache-superset-on-google-cloud-run-4e8f9b85a78a).
 
 ## Introduction
 In broad strokes, we will use this repository to:
